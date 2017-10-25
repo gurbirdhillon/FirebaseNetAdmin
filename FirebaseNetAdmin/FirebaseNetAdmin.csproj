@@ -70,6 +70,7 @@
     <Compile Include="FirebaseAdmin.cs" />
     <Compile Include="Firebase\Auth\FirebaseAdminAuth.cs" />
     <Compile Include="Firebase\Auth\IFirebaseAdminAuth.cs" />
+    <Compile Include="Firebase\Commands\Delete.cs" />
     <Compile Include="Firebase\Commands\EndAt.cs" />
     <Compile Include="Firebase\Commands\EqualTo.cs" />
     <Compile Include="Firebase\Commands\Get.cs" />

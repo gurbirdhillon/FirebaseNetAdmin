@@ -30,6 +30,9 @@ namespace FirebaseNetAdmin.HttpClients
         Task<object> UpdatePathAsync(string path, Dictionary<string, object> content);
         Task<object> UpdatePathAsync(Uri path, Dictionary<string, object> content);
 
+        Task DeleteFromPathAsync(string path);
+        Task DeleteFromPathAsync(Uri path);
+
         Task<T> SendStorageRequestAsync<T>(Uri path, HttpMethod method);
     }
 }

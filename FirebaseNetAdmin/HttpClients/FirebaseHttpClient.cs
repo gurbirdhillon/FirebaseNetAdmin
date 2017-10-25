@@ -155,6 +155,16 @@
             return await PushToPathAsync(new Uri(path, UriKind.Relative), content);
         }
 
+        public async Task DeleteFromPathAsync(Uri path)
+        {
+            await SendAsyncCore(() => PrepareDeleteRequest(path));
+        }
+
+        public async Task DeleteFromPathAsync(string path)
+        {
+            await DeleteFromPathAsync(new Uri(path, UriKind.Relative));
+        }
+
         public async Task<FirebaseAccessToken> Send2LOTokenRequestAsync()
         {
             var jwtPayload = _jwtPayload.GetPayload();
@@ -314,7 +324,18 @@
             };
             AddAuthHeaders(message);
             return message;
+        }
 
+        private HttpRequestMessage PrepareDeleteRequest(Uri path)
+        {
+            var fullUri = GetFullAbsaluteUrl(path);
+            var message = new HttpRequestMessage()
+            {
+                RequestUri = fullUri,
+                Method = HttpMethod.Delete
+            };
+            AddAuthHeaders(message);
+            return message;
         }
 
         protected void AddAuthHeaders(HttpRequestMessage request)
