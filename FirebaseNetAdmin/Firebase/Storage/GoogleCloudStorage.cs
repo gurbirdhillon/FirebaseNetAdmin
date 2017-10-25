@@ -64,16 +64,16 @@
             return;
         }
 
-        public async Task<(bool Result, Exception ex)> TryRemoveObjectAsync(string path)
+        public async Task<Tuple<bool /* Result */, Exception /* ex */>> TryRemoveObjectAsync(string path)
         {
             try
             {
                 await RemoveObjectAsync(path);
-                return (true, null);
+                return Tuple.Create(true, (Exception) null);
             }
             catch (Exception ex)
             {
-                return (false, ex);
+                return Tuple.Create(false, ex);
             }
         }
 
@@ -91,16 +91,16 @@
             return;
         }
 
-        public async Task<(bool Result, Exception ex)> TryMoveObjectAsync(string originPat, string destinationPath)
+        public async Task<Tuple<bool /* Result */, Exception /* ex */>> TryMoveObjectAsync(string originPat, string destinationPath)
         {
             try
             {
                 await MoveObjectAsync(originPat, destinationPath);
-                return (true, null);
+                return Tuple.Create(true, (Exception) null);
             }
             catch (Exception ex)
             {
-                return (false, ex);
+                return Tuple.Create(false, ex);
             }
         }
 

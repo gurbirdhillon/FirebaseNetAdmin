@@ -11,12 +11,12 @@ namespace FirebaseNetAdmin.Firebase.Storage
 
         Task RemoveObjectAsync(string path);
 
-        Task<(bool Result, Exception ex)> TryRemoveObjectAsync(string path);
+        Task<Tuple<bool /* Result */, Exception /* ex */>> TryRemoveObjectAsync(string path);
 
         Task<ObjectMetadata> GetObjectMetaDataAsync(string path);
 
         Task MoveObjectAsync(string originPat, string destinationPath);
 
-        Task<(bool Result, Exception ex)> TryMoveObjectAsync(string originPat, string destinationPath);
+        Task<Tuple<bool /* Result */, Exception /* ex */>> TryMoveObjectAsync(string originPat, string destinationPath);
     }
 }
