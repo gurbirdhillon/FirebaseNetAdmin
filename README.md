@@ -1,6 +1,6 @@
-## What is FirebaseCoreAdmin
+## What is FirebaseNetAdmin
 
-FirebaseCoreAdmin is .net core library for interacting with firebase database and storage. Library is supposed to use in server side. 
+FirebaseNetAdmin is .NET library for interacting with firebase database and storage.
 The interface of library is similar to offical google Node, Java (Admin) sdks.
 
 ## Initialization
