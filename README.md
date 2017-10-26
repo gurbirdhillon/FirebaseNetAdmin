@@ -1,14 +1,14 @@
-## What is FirebaseNetAdmin
+## FirebaseNetAdmin [![NuGet](https://img.shields.io/nuget/v/FirebaseNetAdmin.svg)](https://www.nuget.org/packages/FirebaseNetAdmin)
 
-FirebaseNetAdmin is .NET library for interacting with firebase database and storage.
-The interface of library is similar to offical google Node, Java (Admin) sdks.
+FirebaseNetAdmin is a .NET library for interacting with Firebase Database and Storage.
+The interface of library is similar to offical Google Node, Java (Admin) SDKs.
 
 ## Initialization
 
-Supports both json and p12 config files.
-In order to give permissions to FirebaseCoreSdk to use your firebase database and storage you need first in your firebase app create [service account](https://firebase.google.com/docs/admin/setup) with corresponding permissions. After creating service account you will be propmted to download either json file or p12 file, recommended is json file. Download that file and attach to your project.
+Supports both JSON and P12 config files.
+In order to give permissions to use your Firebase Database and Storage you need first in your Firebase app create [service account](https://firebase.google.com/docs/admin/setup) with corresponding permissions. After creating the service account you will be prompted to download either JSON file or P12 file, recommended is JSON file. Download that file and attach to your project.
 
-* Json file
+* JSON file
 ``` C#
 var credentials = new JSONServiceAccountCredentials("your-file.json");
 var firebaseClient = new FirebaseAdmin(credentials);
@@ -27,7 +27,7 @@ Create token for some `userId` which should be used by client to authenticate ag
 ```
 
 ## Database
-Getting reference on some node of database use `firebaseClient.Database.Ref("endpoint")` for example `firebaseClient.Database.Ref("users/12/details")`
+Getting reference on some node of Database use `firebaseClient.Database.Ref("endpoint")` for example `firebaseClient.Database.Ref("users/12/details")`
 
 ### Query database
 Following reference query methods are available
@@ -100,7 +100,7 @@ var result = firebaseClient.Database.Ref("users/330/events")
 * Delete
 
 With corresponding async methods.
-Methods are functioning exactly like their counterparts in NodeJs or Java sdks.
+Methods are functioning exactly like their counterparts in NodeJS or Java SDKs.
 
 Examples:
 
