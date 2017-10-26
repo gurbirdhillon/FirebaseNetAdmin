@@ -20,7 +20,7 @@ var firebaseClient = new FirebaseAdmin(credentials);
 ```
 
 ## Auth
-Create token for some `userId` which should be used by client to authenticate against firebase database, that token could be used in client sdks by calling `firebase.auth().signInWithCustomToken(token)`
+Create token for some `userId` which should be used by client to authenticate against Firebase Database, that token could be used in client sdks by calling `firebase.auth().signInWithCustomToken(token)`
 
 ```C#
  var token = firebaseClient.Auth.CreateCustomToken(userId);
@@ -42,12 +42,16 @@ Note: when using filters you should have index on that field, otherwise exceptio
 
 For getting data
 * Get
+* GetArray
 * GetWithKeyInjected
+* GetArrayWithKeyInjected
+
 
 with their corresponding async methods
 
 Examples:
-Let's say you have this structure in firebase 
+Let's say you have this structure in Firebase:
+
 `-users/{userId}/events`
 
                       --EventKey1

@@ -58,6 +58,8 @@ namespace FirebaseNetAdmin.HttpClients
 
         public FirebaseAccessToken Send2LOTokenRequest() => Send2LOTokenRequestAsync().Result;
 
+        public async Task<T> GetFromPathAsync<T>(string path) => await GetFromPathAsync<T>(new Uri(path, UriKind.Relative));
+
         public async Task<T> GetFromPathAsync<T>(Uri path)
         {
             var dataAsString = await SendAsyncCore(() => PrepareGetRequest(path));
@@ -66,6 +68,18 @@ namespace FirebaseNetAdmin.HttpClients
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
             return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
+        }
+
+        public async Task<List<T>> GetArrayFromPathAsync<T>(string path) => await GetArrayFromPathAsync<T>(new Uri(path, UriKind.Relative));
+
+        public async Task<List<T>> GetArrayFromPathAsync<T>(Uri path)
+        {
+            var dataAsString = await SendAsyncCore(() => PrepareGetRequest(path));
+            var serializationOptions = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            return JsonConvert.DeserializeObject<List<T>>(dataAsString, serializationOptions);
         }
 
         public async Task<IList<T>> GetFromPathAsyncWithKeyInjected<T>(string path) where T : KeyEntity => await GetFromPathAsyncWithKeyInjected<T>(new Uri(path, UriKind.Relative));
@@ -88,7 +102,27 @@ namespace FirebaseNetAdmin.HttpClients
             }).ToList();
         }
 
-        public async Task<T> GetFromPathAsync<T>(string path) => await GetFromPathAsync<T>(new Uri(path, UriKind.Relative));
+        public async Task<List<T>> GetArrayFromPathAsyncWithKeyInjected<T>(string path) where T : KeyEntity => await GetArrayFromPathAsyncWithKeyInjected<T>(new Uri(path, UriKind.Relative));
+
+        public async Task<List<T>> GetArrayFromPathAsyncWithKeyInjected<T>(Uri path) where T : KeyEntity
+        {
+            var dataAsString = await SendAsyncCore(() => PrepareGetRequest(path));
+            var serializationOptions = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            var result = JsonConvert.DeserializeObject<List<T>>(dataAsString, serializationOptions);
+            var index = 0;
+
+            result.ForEach(item =>
+            {
+                if (item != null)
+                    item.Key = index++.ToString();
+            });
+
+            return result;
+        }
 
         public async Task<T> SetToPathAsync<T>(string path, T content) => await SetToPathAsync(new Uri(path, UriKind.Relative), content);
 

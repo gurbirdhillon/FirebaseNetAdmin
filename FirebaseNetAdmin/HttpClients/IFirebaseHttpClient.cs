@@ -17,8 +17,14 @@ namespace FirebaseNetAdmin.HttpClients
         Task<T> GetFromPathAsync<T>(string path);
         Task<T> GetFromPathAsync<T>(Uri path);
 
+        Task<List<T>> GetArrayFromPathAsync<T>(string path);
+        Task<List<T>> GetArrayFromPathAsync<T>(Uri path);
+
         Task<IList<T>> GetFromPathAsyncWithKeyInjected<T>(Uri path) where T : KeyEntity;
         Task<IList<T>> GetFromPathAsyncWithKeyInjected<T>(string path) where T : KeyEntity;
+
+        Task<List<T>> GetArrayFromPathAsyncWithKeyInjected<T>(Uri path) where T : KeyEntity;
+        Task<List<T>> GetArrayFromPathAsyncWithKeyInjected<T>(string path) where T : KeyEntity;
 
         Task<T> SetToPathAsync<T>(string path, T content);
         Task<T> SetToPathAsync<T>(Uri path, T content);
