@@ -1,12 +1,12 @@
-﻿namespace FirebaseNetAdmin.Configurations.ServiceAccounts
-{
-    using FirebaseNetAdmin.Extensions;
-    using Newtonsoft.Json;
-    using Org.BouncyCastle.Crypto.Parameters;
-    using Org.BouncyCastle.OpenSsl;
-    using System.IO;
-    using System.Security.Cryptography;
+﻿using System.IO;
+using System.Security.Cryptography;
+using FirebaseNetAdmin.Extensions;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.OpenSsl;
 
+namespace FirebaseNetAdmin.Configurations.ServiceAccounts
+{
     public class JSONServiceAccountCredentials : IServiceAccountCredentials
     {
         private JsonServiceAccountModel _jsonModel;
@@ -69,11 +69,10 @@
 
         private void FillRsaParams()
         {
-            string jwt = string.Empty;
             RsaPrivateCrtKeyParameters key;
-            using (StringReader sr = new StringReader(_jsonModel.PrivateKey))
+            using (var sr = new StringReader(_jsonModel.PrivateKey))
             {
-                PemReader pr = new PemReader(sr);
+                var pr = new PemReader(sr);
                 key = (RsaPrivateCrtKeyParameters)pr.ReadObject();
             }
 

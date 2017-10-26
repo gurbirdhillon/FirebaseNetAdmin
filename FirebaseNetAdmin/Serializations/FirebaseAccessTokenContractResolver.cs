@@ -1,12 +1,11 @@
-﻿
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Serialization;
+
 namespace FirebaseNetAdmin.Serializations
 {
-    using Newtonsoft.Json.Serialization;
-    using System.Collections.Generic;
-
     public class FirebaseAccessTokenContractResolver : DefaultContractResolver
     {
-        private readonly static Dictionary<string, string> _propertyMappings = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> _propertyMappings = new Dictionary<string, string>
         {
             { "AccessToken","access_token"},
             { "TokenType", "token_type"},
@@ -15,13 +14,7 @@ namespace FirebaseNetAdmin.Serializations
 
         protected override string ResolvePropertyName(string propertyName)
         {
-            if (!_propertyMappings.TryGetValue(propertyName, out string resolvedName))
-            {
-                return base.ResolvePropertyName(propertyName);
-            }
-
-            return resolvedName;
+            return !_propertyMappings.TryGetValue(propertyName, out var resolvedName) ? base.ResolvePropertyName(propertyName) : resolvedName;
         }
-
     }
 }

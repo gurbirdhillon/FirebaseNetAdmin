@@ -1,11 +1,10 @@
-﻿namespace FirebaseNetAdmin.Encryption.JWT.Providers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Cryptography;
-    using Jose;
-    using FirebaseNetAdmin.JWT.Encryption;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using Jose;
 
+namespace FirebaseNetAdmin.Encryption.JWT.Providers
+{
     public class JoseJwtProvider : IJWTProvider
     {
         public string Encode(IDictionary<string, string> payload, RSA privateKey)
@@ -19,6 +18,7 @@
             {
                 throw new ArgumentNullException(nameof(privateKey));
             }
+
             return Jose.JWT.Encode(payload, privateKey, JwsAlgorithm.RS256);
         }
     }

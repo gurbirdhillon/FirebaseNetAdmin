@@ -1,7 +1,7 @@
-﻿namespace FirebaseNetAdmin.Configurations.ServiceAccounts
-{
-    using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
+namespace FirebaseNetAdmin.Configurations.ServiceAccounts
+{
     public interface IServiceAccountCredentials
     {
         RSAParameters GetRSAParams();

@@ -1,9 +1,6 @@
-﻿using FirebaseNetAdmin.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using FirebaseNetAdmin.Exceptions;
 
 namespace FirebaseNetAdmin.Extensions
 {
@@ -16,8 +13,7 @@ namespace FirebaseNetAdmin.Extensions
 
             var content = await response.Content.ReadAsStringAsync();
 
-            if (response.Content != null)
-                response.Content.Dispose();
+            response.Content?.Dispose();
 
             throw new FirebaseHttpException(content, response.RequestMessage, response);
         }

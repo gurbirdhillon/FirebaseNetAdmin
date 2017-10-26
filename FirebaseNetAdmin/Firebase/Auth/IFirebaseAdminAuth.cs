@@ -1,9 +1,9 @@
-﻿namespace FirebaseNetAdmin.Firebase.Auth
-{
-    using FirebaseNetAdmin.HttpClients;
-    using System;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.HttpClients;
 
+namespace FirebaseNetAdmin.Firebase.Auth
+{
     public interface IFirebaseAdminAuth : IDisposable
     {
         void Authenticate();

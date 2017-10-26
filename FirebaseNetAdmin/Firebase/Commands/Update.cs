@@ -1,13 +1,13 @@
-﻿namespace FirebaseNetAdmin.Firebase.Commands
-{
-    using FirebaseNetAdmin.Firebase.Database;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.Firebase.Database;
 
+namespace FirebaseNetAdmin.Firebase.Commands
+{
     public static partial class CommandExtensions
     {
-        public async static Task<object> UpdateAsync(this IFirebaseAdminRef firebaseRef, Dictionary<string, object> content)
+        public static async Task<object> UpdateAsync(this IFirebaseAdminRef firebaseRef, Dictionary<string, object> content)
         {
             if (content == null || content.Count == 0)
             {
@@ -16,9 +16,6 @@
             return await firebaseRef.HttpClient.UpdatePathAsync(firebaseRef.Path, content);
         }
 
-        public static object Update(this IFirebaseAdminRef firebaseRef, Dictionary<string, object> content)
-        {
-            return firebaseRef.HttpClient.UpdatePathAsync(firebaseRef.Path, content).Result;
-        }
+        public static object Update(this IFirebaseAdminRef firebaseRef, Dictionary<string, object> content) => firebaseRef.HttpClient.UpdatePathAsync(firebaseRef.Path, content).Result;
     }
 }

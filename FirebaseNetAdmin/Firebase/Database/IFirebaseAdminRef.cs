@@ -1,9 +1,8 @@
-﻿
+﻿using System.Collections.Generic;
+using FirebaseNetAdmin.HttpClients;
+
 namespace FirebaseNetAdmin.Firebase.Database
 {
-    using FirebaseNetAdmin.HttpClients;
-    using System.Collections.Generic;
-
     public interface IFirebaseAdminRef
     {
         IFirebaseHttpClient HttpClient { get; }

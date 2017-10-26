@@ -1,9 +1,9 @@
-﻿namespace FirebaseNetAdmin.Configurations
-{
-    using System;
-    using FirebaseNetAdmin.JWT.Encryption;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using FirebaseNetAdmin.Encryption.JWT;
 
+namespace FirebaseNetAdmin.Configurations
+{
     public interface IFirebaseConfiguration
     {
         Uri GoogleOAuthTokenPath { get; }

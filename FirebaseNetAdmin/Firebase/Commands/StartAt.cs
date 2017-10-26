@@ -1,8 +1,7 @@
-﻿namespace FirebaseNetAdmin.Firebase.Commands
-{
-    using FirebaseNetAdmin.Firebase.Database;
-    using System;
+﻿using FirebaseNetAdmin.Firebase.Database;
 
+namespace FirebaseNetAdmin.Firebase.Commands
+{
     public static partial class CommandExtensions
     {
         private const string StartAtValue = "startAt";

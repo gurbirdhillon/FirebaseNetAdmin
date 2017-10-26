@@ -1,7 +1,7 @@
-﻿namespace FirebaseNetAdmin.Firebase.Storage
-{
-    using System;
+﻿using System;
 
+namespace FirebaseNetAdmin.Firebase.Storage
+{
     public class SigningOption
     {
         public SigningAction Action { get; set; }

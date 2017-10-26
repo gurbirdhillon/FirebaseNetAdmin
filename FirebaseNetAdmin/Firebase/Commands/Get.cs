@@ -1,34 +1,20 @@
-﻿namespace FirebaseNetAdmin.Firebase.Commands
-{
-    using FirebaseNetAdmin.Firebase.Database;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.Firebase.Database;
 
+namespace FirebaseNetAdmin.Firebase.Commands
+{
     public static partial class CommandExtensions
     {
-        public static T Get<T>(this IFirebaseAdminRef firebaseRef)
-        {
-            return GetAsync<T>(firebaseRef).Result;
-        }
+        public static T Get<T>(this IFirebaseAdminRef firebaseRef) => GetAsync<T>(firebaseRef).Result;
 
-        public async static Task<T> GetAsync<T>(this IFirebaseAdminRef firebaseRef)
-        {
-            var uri = PrepareUri(firebaseRef);
-            return await firebaseRef.HttpClient.GetFromPathAsync<T>(uri);
-        }
+        public static async Task<T> GetAsync<T>(this IFirebaseAdminRef firebaseRef) => await firebaseRef.HttpClient.GetFromPathAsync<T>(PrepareUri(firebaseRef));
 
-        public async static Task<IList<T>> GetWithKeyInjectedAsync<T>(this IFirebaseAdminRef firebaseRef) where T : KeyEntity
-        {
-            var uri = PrepareUri(firebaseRef);
-            return await firebaseRef.HttpClient.GetFromPathAsyncWithKeyInjected<T>(uri);
-        }
+        public static async Task<IList<T>> GetWithKeyInjectedAsync<T>(this IFirebaseAdminRef firebaseRef) where T : KeyEntity => await firebaseRef.HttpClient.GetFromPathAsyncWithKeyInjected<T>(PrepareUri(firebaseRef));
 
-        public static IList<T> GetWithKeyInjected<T>(this IFirebaseAdminRef firebaseRef) where T : KeyEntity
-        {
-            return GetWithKeyInjectedAsync<T>(firebaseRef).Result;
-        }
+        public static IList<T> GetWithKeyInjected<T>(this IFirebaseAdminRef firebaseRef) where T : KeyEntity => GetWithKeyInjectedAsync<T>(firebaseRef).Result;
 
         private static Uri PrepareUri(IFirebaseAdminRef firebaseRef)
         {
@@ -40,7 +26,7 @@
                 queryParams.Append($"{param.Key}={param.Value}&");
             }
 
-            return new Uri(firebaseRef.Path + queryParams.ToString(), UriKind.Relative);
+            return new Uri(firebaseRef.Path + queryParams, UriKind.Relative);
         }
 
     }

@@ -1,10 +1,10 @@
-﻿namespace FirebaseNetAdmin.Configurations.AuthPayload
-{
-    using FirebaseNetAdmin.Configurations.ServiceAccounts;
-    using FirebaseNetAdmin.Extensions;
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using FirebaseNetAdmin.Configurations.ServiceAccounts;
+using FirebaseNetAdmin.Extensions;
 
+namespace FirebaseNetAdmin.Configurations.AuthPayload
+{
     public class JwtAuthPayloadGenerator : PayloadGenerator
     {
         private readonly IServiceAccountCredentials _creadentials;

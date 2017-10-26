@@ -1,20 +1,15 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.Exceptions;
+using FirebaseNetAdmin.HttpClients;
+
 namespace FirebaseNetAdmin.Firebase.Auth
 {
-    using FirebaseNetAdmin.HttpClients;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using FirebaseNetAdmin.Exceptions;
-
-    public class FirebaseAdminAuth : IFirebaseAdminAuth, IDisposable
+    public class FirebaseAdminAuth : IFirebaseAdminAuth
     {
         private readonly IList<IFirebaseHttpClient> _httpClients = new List<IFirebaseHttpClient>();
-
-        public FirebaseAdminAuth()
-        {
-        }
 
         public void AddFirebaseHttpClient(IFirebaseHttpClient client)
         {
@@ -24,16 +19,9 @@ namespace FirebaseNetAdmin.Firebase.Auth
             }
         }
 
-        public void Authenticate()
-        {
-            AuthenticateAsync().Wait();
-            return;
-        }
+        public void Authenticate() => AuthenticateAsync().Wait();
 
-        public async Task AuthenticateAsync()
-        {
-            await Task.WhenAll(_httpClients.Select(client => client.Send2LOTokenRequestAsync()));
-        }
+        public async Task AuthenticateAsync() => await Task.WhenAll(_httpClients.Select(client => client.Send2LOTokenRequestAsync()));
 
         public string CreateCustomToken(long userId)
         {
@@ -51,16 +39,11 @@ namespace FirebaseNetAdmin.Firebase.Auth
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                foreach (var client in _httpClients)
-                    client.Dispose();
-            }
+            if (!disposing) return;
+            foreach (var client in _httpClients)
+                client.Dispose();
         }
 
-        ~FirebaseAdminAuth()
-        {
-            Dispose(false);
-        }
+        ~FirebaseAdminAuth() => Dispose(false);
     }
 }

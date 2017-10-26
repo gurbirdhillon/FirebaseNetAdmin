@@ -1,10 +1,10 @@
-﻿namespace FirebaseNetAdmin.Configurations
-{
-    using System;
-    using System.Collections.Generic;
-    using FirebaseNetAdmin.JWT.Encryption;
-    using FirebaseNetAdmin.Encryption.JWT.Providers;
+﻿using System;
+using System.Collections.Generic;
+using FirebaseNetAdmin.Encryption.JWT;
+using FirebaseNetAdmin.Encryption.JWT.Providers;
 
+namespace FirebaseNetAdmin.Configurations
+{
     public class DefaultFirebaseConfiguration : IFirebaseConfiguration
     {
         private readonly GoogleServiceAccess _requestedAccess;
@@ -18,6 +18,7 @@
         {
             _requestedAccess = requestedAccess;
         }
+
         public Uri GoogleOAuthTokenPath => new Uri("https://www.googleapis.com/oauth2/v4/token");
 
         public Uri CustomTokenPath => new Uri("https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit");
@@ -30,7 +31,7 @@
         {
             get
             {
-                var scopeList = new List<string>() { "https://www.googleapis.com/auth/userinfo.email" };
+                var scopeList = new List<string> { "https://www.googleapis.com/auth/userinfo.email" };
 
                 if (GoogleServiceAccess.DatabaseOnly == (GoogleServiceAccess.DatabaseOnly & _requestedAccess))
                 {

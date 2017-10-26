@@ -1,23 +1,23 @@
-﻿namespace FirebaseNetAdmin.Firebase.Storage
-{
-    using FirebaseNetAdmin.Configurations.ServiceAccounts;
-    using FirebaseNetAdmin.Extensions;
-    using FirebaseNetAdmin.HttpClients;
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Net;
-    using FirebaseNetAdmin.Configurations;
-    using FirebaseNetAdmin.Firebase.Auth;
-    using System.Threading.Tasks;
-    using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.Configurations;
+using FirebaseNetAdmin.Configurations.ServiceAccounts;
+using FirebaseNetAdmin.Extensions;
+using FirebaseNetAdmin.Firebase.Auth;
+using FirebaseNetAdmin.HttpClients;
 
+namespace FirebaseNetAdmin.Firebase.Storage
+{
     public class GoogleCloudStorage : IGoogleStorage, IDisposable
     {
-        private IFirebaseHttpClient _httpClient;
-        private IServiceAccountCredentials _credentials;
-        private IFirebaseConfiguration _firebaseConfiguration;
+        private readonly IFirebaseHttpClient _httpClient;
+        private readonly IServiceAccountCredentials _credentials;
+        private readonly IFirebaseConfiguration _firebaseConfiguration;
 
         public GoogleCloudStorage(IFirebaseAdminAuth auth, IServiceAccountCredentials credentials)
         {
@@ -33,12 +33,12 @@
 
         public string GetPublicUrl(string path)
         {
-            if (String.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
             {
                 return null;
             }
 
-            string normalziedPath = WebUtility.UrlEncode(path.TrimSlashes());
+            var normalziedPath = WebUtility.UrlEncode(path.TrimSlashes());
 
             var auth = _httpClient.GetAuthority().ToString().TrimSlashes();
             var fullPath = new Uri($"{auth}/{_credentials.GetDefaultBucket()}/{normalziedPath}?alt=media", UriKind.Absolute);
@@ -57,11 +57,9 @@
 
         public async Task RemoveObjectAsync(string path)
         {
-            string urlEncodedPath = GetUrlEncodedPath(path);
+            var urlEncodedPath = GetUrlEncodedPath(path);
             var deleteUri = new Uri($"{ _firebaseConfiguration.StorageBaseAuthority2}/v1/b/{_credentials.GetDefaultBucket()}/o/{urlEncodedPath}", UriKind.Absolute);
             await _httpClient.SendStorageRequestAsync<object>(deleteUri, HttpMethod.Delete);
-
-            return;
         }
 
         public async Task<Tuple<bool /* Result */, Exception /* ex */>> TryRemoveObjectAsync(string path)
@@ -80,15 +78,13 @@
 
         public async Task MoveObjectAsync(string originPath, string destinationPath)
         {
-            string urlEncodedOrigin = GetUrlEncodedPath(originPath);
-            string urlEncodedDestination = GetUrlEncodedPath(destinationPath);
+            var urlEncodedOrigin = GetUrlEncodedPath(originPath);
+            var urlEncodedDestination = GetUrlEncodedPath(destinationPath);
 
             var reWriteUri = new Uri($"{ _firebaseConfiguration.StorageBaseAuthority2}/v1/b/{_credentials.GetDefaultBucket()}/o/{urlEncodedOrigin}/rewriteTo/b/{_credentials.GetDefaultBucket()}/o/{urlEncodedDestination}", UriKind.Absolute);
             await _httpClient.SendStorageRequestAsync<object>(reWriteUri, HttpMethod.Post);
 
             await RemoveObjectAsync(originPath);
-
-            return;
         }
 
         public async Task<Tuple<bool /* Result */, Exception /* ex */>> TryMoveObjectAsync(string originPat, string destinationPath)
@@ -106,14 +102,14 @@
 
         public async Task<ObjectMetadata> GetObjectMetaDataAsync(string path)
         {
-            string urlEncodedPath = GetUrlEncodedPath(path);
+            var urlEncodedPath = GetUrlEncodedPath(path);
             var metaUri = new Uri($"{ _firebaseConfiguration.StorageBaseAuthority2}/v1/b/{_credentials.GetDefaultBucket()}/o/{urlEncodedPath}", UriKind.Absolute);
             return await _httpClient.SendStorageRequestAsync<ObjectMetadata>(metaUri, HttpMethod.Get);
         }
 
         private string GetUrlEncodedPath(string path)
         {
-            string normalizedPath = path.TrimSlashes();
+            var normalizedPath = path.TrimSlashes();
 
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));
@@ -135,26 +131,20 @@
             }
         }
 
-        ~GoogleCloudStorage()
-        {
-            Dispose(false);
-        }
+        ~GoogleCloudStorage() => Dispose(false);
 
-        private string PrepareSignedUrl(SigningOption options, string signature)
+        private string PrepareSignedUrl(SigningOption options, string signature) => new UriBuilder
         {
-            var uri = new UriBuilder();
-            uri.Scheme = "https";
-            uri.Host = $"{_firebaseConfiguration.StorageBaseAuthority.TrimSlashes().Replace("https://", "")}/{_credentials.GetDefaultBucket().TrimSlashes()}";
-            uri.Path = options.Path.Trim().TrimSlashes();
-            uri.Query = string.Format("GoogleAccessId={0}&Expires={1}&Signature={2}", _credentials.GetServiceAccountEmail(),
-                                                                                      BuildExpiration(options.ExpireDate), WebUtility.UrlEncode(signature));
-            return uri.Uri.AbsoluteUri;
-        }
+            Scheme = "https",
+            Host = $"{_firebaseConfiguration.StorageBaseAuthority.TrimSlashes().Replace("https://", "")}/{_credentials.GetDefaultBucket().TrimSlashes()}",
+            Path = options.Path.Trim().TrimSlashes(),
+            Query = $"GoogleAccessId={_credentials.GetServiceAccountEmail()}&Expires={BuildExpiration(options.ExpireDate)}&Signature={WebUtility.UrlEncode(signature)}"
+        }.Uri.AbsoluteUri;
 
         private string EncryptPayload(string signingPayloadAsString)
         {
-            var encryptedBase64String = String.Empty;
-            UTF8Encoding byteConverter = new UTF8Encoding();
+            string encryptedBase64String;
+            var byteConverter = new UTF8Encoding();
             var payloadBytes = byteConverter.GetBytes(signingPayloadAsString);
 
             using (var rsa = new RSACryptoServiceProvider())
@@ -166,68 +156,37 @@
             return encryptedBase64String;
         }
 
-        private IList<string> BuildSigningPayload(SigningOption options)
+        private IEnumerable<string> BuildSigningPayload(SigningOption options) => new List<string>
         {
-            var payload = new List<string>()
-            {
-                BuildActionMethod(options.Action),
-                BuildContentMD5(options.ContentMD5),
-                BuildContentType(options.ContentType),
-                BuildExpiration(options.ExpireDate),
-                BuilCanonicalizedResource(options.Path)
-            };
+            BuildActionMethod(options.Action),
+            BuildContentMD5(options.ContentMD5),
+            BuildContentType(options.ContentType),
+            BuildExpiration(options.ExpireDate),
+            BuilCanonicalizedResource(options.Path)
+        };
 
-            return payload;
-        }
-
-        private string BuildActionMethod(SigningAction action)
+        private static string BuildActionMethod(SigningAction action)
         {
-            string actionMethod = string.Empty;
             switch (action)
             {
                 case SigningAction.Read:
-                    actionMethod = "GET";
-                    break;
+                    return "GET";
                 case SigningAction.Write:
-                    actionMethod = "PUT";
-                    break;
+                    return "PUT";
                 case SigningAction.Delete:
-                    actionMethod = "DELETE";
-                    break;
+                    return "DELETE";
                 default:
-                    break;
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
-
-            return actionMethod;
         }
 
-        private string BuildContentMD5(string contentMD5)
-        {
-            if (String.IsNullOrWhiteSpace(contentMD5))
-            {
-                return string.Empty;
-            }
-            return contentMD5.Trim();
-        }
+        private static string BuildContentMD5(string contentMD5) => string.IsNullOrWhiteSpace(contentMD5) ? string.Empty : contentMD5.Trim();
 
-        private string BuildContentType(string contentType)
-        {
-            if (string.IsNullOrWhiteSpace(contentType))
-            {
-                return String.Empty;
-            }
-            return contentType.Trim();
-        }
+        private static string BuildContentType(string contentType) => string.IsNullOrWhiteSpace(contentType) ? string.Empty : contentType.Trim();
 
-        private string BuildExpiration(DateTime dateTo)
-        {
-            return dateTo.ToUnixSeconds().ToString();
-        }
+        private static string BuildExpiration(DateTime dateTo) => dateTo.ToUnixSeconds().ToString();
 
-        private string BuilCanonicalizedResource(string path)
-        {
-            return $"/{_credentials.GetDefaultBucket().Trim().TrimSlashes()}/{WebUtility.UrlEncode(path.TrimSlashes())}";
-        }
+        private string BuilCanonicalizedResource(string path) => $"/{_credentials.GetDefaultBucket().Trim().TrimSlashes()}/{WebUtility.UrlEncode(path.TrimSlashes())}";
 
         private void ValidateOptions(SigningOption options)
         {
@@ -239,7 +198,7 @@
             {
                 throw new ArgumentOutOfRangeException(nameof(options.ExpireDate), "ExpireDate should be reasonable value");
             }
-            if (String.IsNullOrWhiteSpace(options.Path))
+            if (string.IsNullOrWhiteSpace(options.Path))
             {
                 throw new ArgumentNullException(nameof(options.Path));
             }

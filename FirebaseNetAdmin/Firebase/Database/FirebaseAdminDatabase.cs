@@ -1,14 +1,14 @@
-﻿namespace FirebaseNetAdmin.Firebase.Database
-{
-    using System;
-    using FirebaseNetAdmin.Configurations;
-    using FirebaseNetAdmin.Configurations.ServiceAccounts;
-    using FirebaseNetAdmin.Firebase.Auth;
-    using FirebaseNetAdmin.HttpClients;
+﻿using System;
+using FirebaseNetAdmin.Configurations;
+using FirebaseNetAdmin.Configurations.ServiceAccounts;
+using FirebaseNetAdmin.Firebase.Auth;
+using FirebaseNetAdmin.HttpClients;
 
+namespace FirebaseNetAdmin.Firebase.Database
+{
     public class FirebaseAdminDatabase : IFirebaseAdminDatabase, IDisposable
     {
-        private IFirebaseHttpClient _httpClient;
+        private readonly IFirebaseHttpClient _httpClient;
 
         public FirebaseAdminDatabase(IFirebaseAdminAuth auth, IServiceAccountCredentials credentials)
         {
@@ -26,10 +26,7 @@
             GC.SuppressFinalize(this);
         }
 
-        public IFirebaseAdminRef Ref(string path)
-        {
-            return new FirebaseAdminRef(_httpClient, path);
-        }
+        public IFirebaseAdminRef Ref(string path) => new FirebaseAdminRef(_httpClient, path);
 
         protected virtual void Dispose(bool disposing)
         {
@@ -39,11 +36,6 @@
             }
         }
 
-        ~FirebaseAdminDatabase()
-        {
-            Dispose(false);
-        }
-
-
+        ~FirebaseAdminDatabase() => Dispose(false);
     }
 }

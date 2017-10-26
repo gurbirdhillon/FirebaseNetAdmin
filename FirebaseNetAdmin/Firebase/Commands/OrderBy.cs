@@ -1,13 +1,13 @@
-﻿namespace FirebaseNetAdmin.Firebase.Commands
-{
-    using FirebaseNetAdmin.Firebase.Database;
-    using System;
+﻿using System;
+using FirebaseNetAdmin.Firebase.Database;
 
+namespace FirebaseNetAdmin.Firebase.Commands
+{
     public static partial class CommandExtensions
     {
         public static IFirebaseAdminRef OrderBy(this IFirebaseAdminRef firebaseRef, string value)
         {
-            if (String.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentNullException(nameof(value));
             }

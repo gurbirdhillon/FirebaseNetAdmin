@@ -1,9 +1,9 @@
-﻿namespace FirebaseNetAdmin
-{
-    using FirebaseNetAdmin.Firebase.Auth;
-    using FirebaseNetAdmin.Firebase.Database;
-    using FirebaseNetAdmin.Firebase.Storage;
+﻿using FirebaseNetAdmin.Firebase.Auth;
+using FirebaseNetAdmin.Firebase.Database;
+using FirebaseNetAdmin.Firebase.Storage;
 
+namespace FirebaseNetAdmin
+{
     public interface IFirebaseAdmin
     {
         IFirebaseAdminAuth Auth { get; }

@@ -1,8 +1,8 @@
-﻿namespace FirebaseNetAdmin.Configurations.ServiceAccounts
-{
-    using System.Security.Cryptography.X509Certificates;
-    using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
+namespace FirebaseNetAdmin.Configurations.ServiceAccounts
+{
     public class P12ServiceAccountCredentials : IServiceAccountCredentials
     {
         private readonly string _fileName;

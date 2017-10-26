@@ -1,10 +1,10 @@
-﻿namespace FirebaseNetAdmin.Configurations.AuthPayload
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace FirebaseNetAdmin.Configurations.AuthPayload
+{
     public abstract class PayloadGenerator
     {
-        private Dictionary<string, string> _payload = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _payload = new Dictionary<string, string>();
 
         protected void AddToPayload(string key, string value)
         {
@@ -14,10 +14,7 @@
                 _payload.Add(key, value);
         }
 
-        protected IDictionary<string, string> GetPayloadData()
-        {
-            return _payload;
-        }
+        protected IDictionary<string, string> GetPayloadData() => _payload;
 
         public virtual IDictionary<string, string> GetPayload(IDictionary<string, string> additionalPayload = null)
         {

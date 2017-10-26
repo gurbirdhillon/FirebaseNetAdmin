@@ -1,22 +1,24 @@
-﻿namespace FirebaseNetAdmin.HttpClients
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Linq;
-    using System.Net.Http;
-    using FirebaseNetAdmin.Configurations;
-    using FirebaseNetAdmin.Configurations.ServiceAccounts;
-    using FirebaseNetAdmin.Configurations.AuthPayload;
-    using Newtonsoft.Json;
-    using System.Threading.Tasks;
-    using FirebaseNetAdmin.Serializations;
-    using Newtonsoft.Json.Serialization;
-    using FirebaseNetAdmin.Exceptions;
-    using FirebaseNetAdmin.Firebase;
-    using System.Security.Cryptography;
-    using FirebaseNetAdmin.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.Configurations;
+using FirebaseNetAdmin.Configurations.AuthPayload;
+using FirebaseNetAdmin.Configurations.ServiceAccounts;
+using FirebaseNetAdmin.Exceptions;
+using FirebaseNetAdmin.Extensions;
+using FirebaseNetAdmin.Firebase;
+using FirebaseNetAdmin.Serializations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
+namespace FirebaseNetAdmin.HttpClients
+{
     /// <summary>
     /// Creates Rest Api client for firebase rest http interactions
     /// </summary>
@@ -40,61 +42,38 @@
 
         #region Constructors
 
-        public FirebaseHttpClient(IServiceAccountCredentials credentials)
-        {
-            var defaultConfig = new DefaultFirebaseConfiguration();
-            Initialize(credentials, defaultConfig, null);
-        }
+        public FirebaseHttpClient(IServiceAccountCredentials credentials) => Initialize(credentials, new DefaultFirebaseConfiguration(), null);
 
-        public FirebaseHttpClient(IServiceAccountCredentials credentials, Uri authority)
-        {
-            var defaultConfig = new DefaultFirebaseConfiguration();
-            Initialize(credentials, defaultConfig, authority);
-        }
+        public FirebaseHttpClient(IServiceAccountCredentials credentials, Uri authority) => Initialize(credentials, new DefaultFirebaseConfiguration(), authority);
 
-        public FirebaseHttpClient(IServiceAccountCredentials credentials, IFirebaseConfiguration config, Uri authority) : base()
-        {
-            Initialize(credentials, config, authority);
-        }
+        public FirebaseHttpClient(IServiceAccountCredentials credentials, IFirebaseConfiguration config, Uri authority) => Initialize(credentials, config, authority);
 
-        public FirebaseHttpClient(IServiceAccountCredentials credentials, IFirebaseConfiguration config, HttpMessageHandler handler, Uri authority) : base(handler)
-        {
-            Initialize(credentials, config, authority);
-        }
+        public FirebaseHttpClient(IServiceAccountCredentials credentials, IFirebaseConfiguration config, HttpMessageHandler handler, Uri authority) : base(handler) => Initialize(credentials, config, authority);
 
-        public FirebaseHttpClient(IServiceAccountCredentials credentials, IFirebaseConfiguration config, HttpMessageHandler handler, bool disposeHandler, Uri authority) : base(handler, disposeHandler)
-        {
-            Initialize(credentials, config, authority);
-        }
+        public FirebaseHttpClient(IServiceAccountCredentials credentials, IFirebaseConfiguration config, HttpMessageHandler handler, bool disposeHandler, Uri authority) : base(handler, disposeHandler) => Initialize(credentials, config, authority);
 
         #endregion
 
         #region Public
 
-        public FirebaseAccessToken Send2LOTokenRequest()
-        {
-            return Send2LOTokenRequestAsync().Result;
-        }
+        public FirebaseAccessToken Send2LOTokenRequest() => Send2LOTokenRequestAsync().Result;
 
         public async Task<T> GetFromPathAsync<T>(Uri path)
         {
             var dataAsString = await SendAsyncCore(() => PrepareGetRequest(path));
-            var serializationOptions = new JsonSerializerSettings()
+            var serializationOptions = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
             return JsonConvert.DeserializeObject<T>(dataAsString, serializationOptions);
         }
 
-        public async Task<IList<T>> GetFromPathAsyncWithKeyInjected<T>(string path) where T : KeyEntity
-        {
-            return await GetFromPathAsyncWithKeyInjected<T>(new Uri(path, UriKind.Relative));
-        }
+        public async Task<IList<T>> GetFromPathAsyncWithKeyInjected<T>(string path) where T : KeyEntity => await GetFromPathAsyncWithKeyInjected<T>(new Uri(path, UriKind.Relative));
 
         public async Task<IList<T>> GetFromPathAsyncWithKeyInjected<T>(Uri path) where T : KeyEntity
         {
             var dataAsString = await SendAsyncCore(() => PrepareGetRequest(path));
-            var serializationOptions = new JsonSerializerSettings()
+            var serializationOptions = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
@@ -109,21 +88,14 @@
             }).ToList();
         }
 
-        public async Task<T> GetFromPathAsync<T>(string path)
-        {
-            var uri = new Uri(path, UriKind.Relative);
-            return await GetFromPathAsync<T>(uri);
-        }
+        public async Task<T> GetFromPathAsync<T>(string path) => await GetFromPathAsync<T>(new Uri(path, UriKind.Relative));
 
-        public async Task<T> SetToPathAsync<T>(string path, T content)
-        {
-            return await SetToPathAsync(new Uri(path, UriKind.Relative), content);
-        }
+        public async Task<T> SetToPathAsync<T>(string path, T content) => await SetToPathAsync(new Uri(path, UriKind.Relative), content);
 
         public async Task<T> SetToPathAsync<T>(Uri path, T content)
         {
             var dataAsString = await SendAsyncCore(() => PrepareSetRequest(path, content));
-            var serializationOptions = new JsonSerializerSettings()
+            var serializationOptions = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
@@ -150,20 +122,11 @@
             return JsonConvert.DeserializeObject<object>(dataAsString);
         }
 
-        public async Task<string> PushToPathAsync<T>(string path, T content)
-        {
-            return await PushToPathAsync(new Uri(path, UriKind.Relative), content);
-        }
+        public async Task<string> PushToPathAsync<T>(string path, T content) => await PushToPathAsync(new Uri(path, UriKind.Relative), content);
 
-        public async Task DeleteFromPathAsync(Uri path)
-        {
-            await SendAsyncCore(() => PrepareDeleteRequest(path));
-        }
+        public async Task DeleteFromPathAsync(Uri path) => await SendAsyncCore(() => PrepareDeleteRequest(path));
 
-        public async Task DeleteFromPathAsync(string path)
-        {
-            await DeleteFromPathAsync(new Uri(path, UriKind.Relative));
-        }
+        public async Task DeleteFromPathAsync(string path) => await DeleteFromPathAsync(new Uri(path, UriKind.Relative));
 
         public async Task<FirebaseAccessToken> Send2LOTokenRequestAsync()
         {
@@ -180,9 +143,8 @@
             var permissionPayload = new PermissionAuthPayloadGenerator(jwtToken).GetPayload();
 
             var urlEncodedPayload = new FormUrlEncodedContent(permissionPayload);
-
-
-            HttpResponseMessage response = await PostAsync(_firebaseConfig.GoogleOAuthTokenPath, urlEncodedPayload);
+            
+            var response = await PostAsync(_firebaseConfig.GoogleOAuthTokenPath, urlEncodedPayload);
             await response.EnsureSuccessStatusCodeAsync();
 
             if (response.Content == null)
@@ -190,7 +152,7 @@
                 throw new FirebaseHttpException("Authentication failed, empty response content from firebase server");
             }
             var strinRepresentation = await response.Content.ReadAsStringAsync();
-            var serializationSettings = new JsonSerializerSettings() { ContractResolver = new FirebaseAccessTokenContractResolver() };
+            var serializationSettings = new JsonSerializerSettings { ContractResolver = new FirebaseAccessTokenContractResolver() };
             _accessToken = JsonConvert.DeserializeObject<FirebaseAccessToken>(strinRepresentation, serializationSettings);
             if (_accessToken == null)
             {
@@ -200,10 +162,7 @@
 
         }
 
-        public Uri GetAuthority()
-        {
-            return _authority;
-        }
+        public Uri GetAuthority() => _authority;
 
         public string CreateCustomToken(long userId)
         {
@@ -225,34 +184,25 @@
 
         #endregion
 
-        #region Private Helpers        
+        #region Private Helpers
 
-        private HttpRequestMessage PrepareSetRequest<T>(Uri path, T content)
-        {
-            return PrepareContentRequest(path, content, HttpMethod.Put);
-        }
+        private HttpRequestMessage PrepareSetRequest<T>(Uri path, T content) => PrepareContentRequest(path, content, HttpMethod.Put);
 
-        private HttpRequestMessage PreparePushRequest<T>(Uri path, T content)
-        {
-            return PrepareContentRequest(path, content, HttpMethod.Post);
-        }
+        private HttpRequestMessage PreparePushRequest<T>(Uri path, T content) => PrepareContentRequest(path, content, HttpMethod.Post);
 
-        private HttpRequestMessage PreparePatchRequest(Uri path, Dictionary<string, object> content)
-        {
-            return PrepareContentRequest(path, content, httpPatchMethod);
-        }
+        private HttpRequestMessage PreparePatchRequest(Uri path, Dictionary<string, object> content) => PrepareContentRequest(path, content, httpPatchMethod);
 
         private HttpRequestMessage PrepareContentRequest<T>(Uri path, T content, HttpMethod method)
         {
-            var serializationOptions = new JsonSerializerSettings()
+            var serializationOptions = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
             var stringContent = JsonConvert.SerializeObject(content, serializationOptions);
             var jsonContent = new StringContent(stringContent, Encoding.UTF8, "application/json");
-            var fullUri = GetFullAbsaluteUrl(path);
+            var fullUri = GetFullAbsoluteUrl(path);
 
-            var message = new HttpRequestMessage()
+            var message = new HttpRequestMessage
             {
                 RequestUri = fullUri,
                 Method = method,
@@ -265,7 +215,7 @@
         public async Task<T> SendStorageRequestAsync<T>(Uri path, HttpMethod method)
         {
             var dataAsString = await SendAsyncCore(() => PrepareStorageRequest(path, method));
-            var serializationOptions = new JsonSerializerSettings()
+            var serializationOptions = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
@@ -274,16 +224,11 @@
 
         private HttpRequestMessage PrepareStorageRequest(Uri path, HttpMethod method)
         {
-            var serializationOptions = new JsonSerializerSettings()
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-            var fullUri = GetFullAbsaluteUrl(path);
-
-            var message = new HttpRequestMessage()
+            var fullUri = GetFullAbsoluteUrl(path);
+            var message = new HttpRequestMessage
             {
                 RequestUri = fullUri,
-                Method = method,
+                Method = method
             };
             AddAuthHeaders(message);
             return message;
@@ -305,19 +250,16 @@
         private async Task<HttpResponseMessage> SendAsyncWithReAuthentication(Func<HttpRequestMessage> requestMessage)
         {
             var response = await SendAsync(requestMessage());
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                var accessToken = await Send2LOTokenRequestAsync();
-                response = await SendAsync(requestMessage());
-            }
+            if (response.StatusCode != HttpStatusCode.Unauthorized) return response;
+            await Send2LOTokenRequestAsync();
+            response = await SendAsync(requestMessage());
             return response;
         }
-
-
+        
         private HttpRequestMessage PrepareGetRequest(Uri path)
         {
-            var fullUri = GetFullAbsaluteUrl(path);
-            var message = new HttpRequestMessage()
+            var fullUri = GetFullAbsoluteUrl(path);
+            var message = new HttpRequestMessage
             {
                 RequestUri = fullUri,
                 Method = HttpMethod.Get
@@ -328,8 +270,8 @@
 
         private HttpRequestMessage PrepareDeleteRequest(Uri path)
         {
-            var fullUri = GetFullAbsaluteUrl(path);
-            var message = new HttpRequestMessage()
+            var fullUri = GetFullAbsoluteUrl(path);
+            var message = new HttpRequestMessage
             {
                 RequestUri = fullUri,
                 Method = HttpMethod.Delete
@@ -345,7 +287,7 @@
                 throw new ArgumentNullException(nameof(request));
             }
 
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken?.AccessToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken?.AccessToken);
         }
 
         protected void Initialize(IServiceAccountCredentials credentials, IFirebaseConfiguration config, Uri authority)
@@ -364,7 +306,7 @@
             DefaultRequestHeaders.Add("accept", "application/json");
         }
 
-        private Uri GetFullAbsaluteUrl(Uri uri)
+        private Uri GetFullAbsoluteUrl(Uri uri)
         {
             if (_authority == null && !uri.IsAbsoluteUri)
             {

@@ -1,7 +1,7 @@
-﻿namespace FirebaseNetAdmin.Firebase
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace FirebaseNetAdmin.Firebase
+{
     public class KeyEntity
     {
         [JsonIgnore]

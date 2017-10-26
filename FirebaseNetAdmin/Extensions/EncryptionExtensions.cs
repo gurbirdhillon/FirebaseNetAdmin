@@ -1,23 +1,20 @@
-﻿
+﻿using System.Security.Cryptography;
+using Org.BouncyCastle.Crypto.Parameters;
+
 namespace FirebaseNetAdmin.Extensions
 {
-    using Org.BouncyCastle.Crypto.Parameters;
-    using System.Security.Cryptography;
-
     public static class EncryptionExtensions
     {
-        public static RSAParameters ToRSAParameters(this RsaPrivateCrtKeyParameters privKey)
+        public static RSAParameters ToRSAParameters(this RsaPrivateCrtKeyParameters privKey) => new RSAParameters
         {
-            RSAParameters rp = new RSAParameters();
-            rp.Modulus = privKey.Modulus.ToByteArrayUnsigned();
-            rp.Exponent = privKey.PublicExponent.ToByteArrayUnsigned();
-            rp.D = privKey.Exponent.ToByteArrayUnsigned();
-            rp.P = privKey.P.ToByteArrayUnsigned();
-            rp.Q = privKey.Q.ToByteArrayUnsigned();
-            rp.DP = privKey.DP.ToByteArrayUnsigned();
-            rp.DQ = privKey.DQ.ToByteArrayUnsigned();
-            rp.InverseQ = privKey.QInv.ToByteArrayUnsigned();
-            return rp;
-        }
+            Modulus = privKey.Modulus.ToByteArrayUnsigned(),
+            Exponent = privKey.PublicExponent.ToByteArrayUnsigned(),
+            D = privKey.Exponent.ToByteArrayUnsigned(),
+            P = privKey.P.ToByteArrayUnsigned(),
+            Q = privKey.Q.ToByteArrayUnsigned(),
+            DP = privKey.DP.ToByteArrayUnsigned(),
+            DQ = privKey.DQ.ToByteArrayUnsigned(),
+            InverseQ = privKey.QInv.ToByteArrayUnsigned()
+        };
     }
 }

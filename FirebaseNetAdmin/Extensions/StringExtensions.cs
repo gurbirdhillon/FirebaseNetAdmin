@@ -1,17 +1,14 @@
-﻿
-namespace FirebaseNetAdmin.Extensions
+﻿namespace FirebaseNetAdmin.Extensions
 {
-    using System;
-
     public static class StringExtensions
     {
         public static string TrimSlashes(this string str)
         {
-            if (String.IsNullOrWhiteSpace(str))
+            if (string.IsNullOrWhiteSpace(str))
             {
                 return "";
             }
-            char[] trimedCharacters = new char[] { '/', '\\' };
+            char[] trimedCharacters = { '/', '\\' };
             return str.Trim(trimedCharacters);
         }
     }

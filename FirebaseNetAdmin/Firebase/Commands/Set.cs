@@ -1,24 +1,20 @@
-﻿namespace FirebaseNetAdmin.Firebase.Commands
-{
-    using System;
-    using FirebaseNetAdmin.Firebase.Database;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using FirebaseNetAdmin.Firebase.Database;
 
+namespace FirebaseNetAdmin.Firebase.Commands
+{
     public static partial class CommandExtensions
     {
-
-        public async static Task<T> SetAsync<T>(this IFirebaseAdminRef firebaseRef, T content)
+        public static async Task<T> SetAsync<T>(this IFirebaseAdminRef firebaseRef, T content)
         {
             if(content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
-            return await firebaseRef.HttpClient.SetToPathAsync<T>(firebaseRef.Path, content);
+            return await firebaseRef.HttpClient.SetToPathAsync(firebaseRef.Path, content);
         }
 
-        public static T Set<T>(this IFirebaseAdminRef firebaseRef, T content)
-        {
-            return SetAsync(firebaseRef, content).Result;
-        }
+        public static T Set<T>(this IFirebaseAdminRef firebaseRef, T content) => SetAsync(firebaseRef, content).Result;
     }
 }

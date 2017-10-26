@@ -1,19 +1,16 @@
-﻿namespace FirebaseNetAdmin
-{
-    using System;
-    using FirebaseNetAdmin.Configurations.ServiceAccounts;
-    using FirebaseNetAdmin.Firebase.Auth;
-    using FirebaseNetAdmin.Firebase.Database;
-    using FirebaseNetAdmin.Firebase.Storage;
+﻿using System;
+using FirebaseNetAdmin.Configurations.ServiceAccounts;
+using FirebaseNetAdmin.Firebase.Auth;
+using FirebaseNetAdmin.Firebase.Database;
+using FirebaseNetAdmin.Firebase.Storage;
 
+namespace FirebaseNetAdmin
+{
     public class FirebaseAdmin : IFirebaseAdmin, IDisposable
     {
-        #region Fields  
+        #region Fields
 
         private IServiceAccountCredentials _credentials;
-        private IFirebaseAdminAuth _auth;
-        private IFirebaseAdminDatabase _database;
-        private IGoogleStorage _storage;
 
         private GoogleServiceAccess _requestedAccess;
 
@@ -21,9 +18,11 @@
 
         #region Properties
 
-        public IFirebaseAdminAuth Auth => _auth;
-        public IFirebaseAdminDatabase Database => _database;
-        public IGoogleStorage Storage => _storage;
+        public IFirebaseAdminAuth Auth { get; private set; }
+
+        public IFirebaseAdminDatabase Database { get; private set; }
+
+        public IGoogleStorage Storage { get; private set; }
 
         #endregion
 
@@ -46,7 +45,7 @@
         {
             if (disposing)
             {
-                _auth.Dispose();
+                Auth.Dispose();
             }
         }
 
@@ -56,10 +55,7 @@
             GC.SuppressFinalize(this);
         }
 
-        ~FirebaseAdmin()
-        {
-            Dispose(false);
-        }
+        ~FirebaseAdmin() => Dispose(false);
 
         #endregion
 
@@ -69,13 +65,13 @@
         {
             _requestedAccess = access;
             _credentials = credentials ?? throw new ArgumentNullException(nameof(credentials));
-            _auth = new FirebaseAdminAuth();
+            Auth = new FirebaseAdminAuth();
 
             if (GoogleServiceAccess.DatabaseOnly == (_requestedAccess & GoogleServiceAccess.DatabaseOnly))
-                _database = new FirebaseAdminDatabase(_auth, _credentials);
+                Database = new FirebaseAdminDatabase(Auth, _credentials);
 
             if (GoogleServiceAccess.StorageOnly == (_requestedAccess & GoogleServiceAccess.StorageOnly))
-                _storage = new GoogleCloudStorage(_auth, _credentials);
+                Storage = new GoogleCloudStorage(Auth, _credentials);
         }
 
         #endregion

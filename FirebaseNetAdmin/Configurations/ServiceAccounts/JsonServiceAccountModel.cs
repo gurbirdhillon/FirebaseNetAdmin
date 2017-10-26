@@ -1,7 +1,7 @@
-﻿namespace FirebaseNetAdmin.Configurations.ServiceAccounts
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace FirebaseNetAdmin.Configurations.ServiceAccounts
+{
     public class JsonServiceAccountModel
     {
         [JsonProperty("project_id")]
