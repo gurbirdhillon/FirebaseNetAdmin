@@ -93,6 +93,7 @@ var result = firebaseClient.Database.Ref("users/330/events")
 * Push
 * Set
 * Update
+* Delete
 
 With corresponding async methods.
 Methods are functioning exactly like their counterparts in NodeJs or Java sdks.
@@ -120,6 +121,11 @@ var result = firebaseClient.Database.Ref("/users/30/details").Update(new Diction
 var result = firebaseClient.Database.Ref("/test").Set(new Test1());
 ```
 
+`Delete`
+
+```C#
+firebaseClient.Database.Ref("/test").Delete();
+```
 
 ## Storage
 Following storage methods are supported
@@ -145,8 +151,3 @@ var signedUrl = firebaseClient.Storage.GetSignedUrl(new Firebase.Storage.Signing
                  ExpireDate = DateTime.Now + new TimeSpan(0, 0, 0, 0, 60000000)
              });
 ```
-
-
-
-
-
