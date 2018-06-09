@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirebaseNetStandardAdmin", "FirebaseNetStandardAdmin\FirebaseNetStandardAdmin.csproj", "{C83ACDFD-28FF-4A59-8774-3352E5695D2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C83ACDFD-28FF-4A59-8774-3352E5695D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83ACDFD-28FF-4A59-8774-3352E5695D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83ACDFD-28FF-4A59-8774-3352E5695D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83ACDFD-28FF-4A59-8774-3352E5695D2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99746A23-519B-4387-AC82-3A37133DA397}
+	EndGlobalSection
+EndGlobal
