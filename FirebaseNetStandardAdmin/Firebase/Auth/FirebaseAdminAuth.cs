@@ -23,12 +23,17 @@ namespace FirebaseNetStandardAdmin.Firebase.Auth
 
         public async Task AuthenticateAsync() => await Task.WhenAll(_httpClients.Select(client => client.Send2LOTokenRequestAsync()));
 
-        public string CreateCustomToken(long userId)
+        public string CreateCustomToken(long userId, IDictionary<string, string> additionalClaims = null)
+        {
+            return CreateCustomToken(userId.ToString(), additionalClaims: additionalClaims);
+        }
+
+        public string CreateCustomToken(string userId, IDictionary<string, string> additionalClaims = null)
         {
             if (_httpClients == null || _httpClients.Count == 0)
                 throw new FirebaseHttpException("No initialzied clients were found");
 
-            return _httpClients.First().CreateCustomToken(userId);
+            return _httpClients.First().CreateCustomToken(userId, additionalClaims: additionalClaims);
         }
 
         public void Dispose()

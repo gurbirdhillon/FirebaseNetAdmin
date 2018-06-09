@@ -198,12 +198,13 @@ namespace FirebaseNetStandardAdmin.HttpClients
 
         public Uri GetAuthority() => _authority;
 
-        public string CreateCustomToken(long userId)
+        public string CreateCustomToken(string userId, IDictionary<string,string> additionalClaims = null)
         {
-            var jwtPayload = _jwtCustomTokenPayload.GetPayload(new Dictionary<string, string>
-            {
-                { "uid", userId.ToString() }
-            });
+            var claims = additionalClaims ?? new Dictionary<string, string>();
+
+            claims.Add("uid", userId);
+
+            var jwtPayload = _jwtCustomTokenPayload.GetPayload(claims);
             var rsaParams = _serviceAccountCredentials.GetRSAParams();
 
             string jwtToken;

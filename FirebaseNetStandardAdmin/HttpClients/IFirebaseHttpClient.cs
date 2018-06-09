@@ -10,7 +10,7 @@ namespace FirebaseNetStandardAdmin.HttpClients
     {
         Uri GetAuthority();
         FirebaseAccessToken Send2LOTokenRequest();
-        string CreateCustomToken(long userId);
+        string CreateCustomToken(string userId, IDictionary<string, string> additionalClaims = null);
 
         Task<FirebaseAccessToken> Send2LOTokenRequestAsync();
 
