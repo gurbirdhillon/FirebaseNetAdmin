@@ -1,4 +1,4 @@
-## FirebaseNetAdmin [![NuGet](https://img.shields.io/nuget/v/FirebaseNetAdmin.svg)](https://www.nuget.org/packages/FirebaseNetStandardAdmin)
+## FirebaseNetAdmin [![NuGet](https://img.shields.io/nuget/v/FirebaseNetStandardAdmin.svg)](https://www.nuget.org/packages/FirebaseNetStandardAdmin)
 
 FirebaseNetAdmin is a .NET library for interacting with Firebase Database and Storage.
 The interface of library is similar to offical Google Node, Java (Admin) SDKs.
