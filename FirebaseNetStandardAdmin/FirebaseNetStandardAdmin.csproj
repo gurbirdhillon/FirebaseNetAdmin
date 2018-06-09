@@ -6,6 +6,8 @@
     <Authors>Gurbir Dhillon</Authors>
     <Product />
     <Company />
+    <Version>1.0.1</Version>
+    <PackageProjectUrl>https://github.com/gurbirdhillon/FirebaseNetAdmin</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
