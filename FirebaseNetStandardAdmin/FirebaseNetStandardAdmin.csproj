@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Gurbir Dhillon</Authors>
+    <Product />
+    <Company />
   </PropertyGroup>
 
   <ItemGroup>
